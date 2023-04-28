@@ -57,7 +57,52 @@ class client {
                 System.out.print(fifo_result.get(i) + " ,");
             }
     }
+    public static void lru(costumer new_one,int n){
+        l_counter++;
+        if(lru_list_id.contains(new_one)) {
+            int j= lru_list_id.indexOf(new_one);
+            costumer c=lru_list_id.get(j);
+            c.counter=l_counter;
+            lru_list_id.set(j,c);
+        }
+        else{
+            numof_lru_costumer++;
+            new_one.counter=l_counter;
+            if (numof_lru_costumer <= n) {
+                CountLruFault++;
+                lru_list_id.add(new_one);
+                lru_result.add(new_one.id);
+            }
+            else if (numof_lru_costumer > n) {
+                CountLruFault++;
+                int min=Integer.MAX_VALUE;
+                int delete_id=0;
+                int x=0;
+                for (int i=0;i<lru_list_id.size();i++){
+                    if(lru_list_id.get(i).counter<min){
+                        costumer c=lru_list_id.get(i);
+                        min=c.counter;
+                        delete_id=c.id;
+                        x=i;
+                    }
+                }
+                lru_list_id.remove(x);
+                numof_lru_costumer--;
+                lru_list_id.add(new_one);
+                for (int i = 0; i < lru_result.size(); i++) {
+                    if(lru_result.get(i)==delete_id){
+                        lru_result.set(i,new_one.id);
+                        break;
+                    }
+                }
+            }
 
+        }
+        System.out.print("LRU:");
+        for (int i=0;i< lru_result.size();i++)
+            System.out.print( lru_result.get(i)+" ,");
+        System.out.println();
+    }
 
 }
 
