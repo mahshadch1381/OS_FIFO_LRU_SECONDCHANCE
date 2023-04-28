@@ -103,7 +103,54 @@ class client {
             System.out.print( lru_result.get(i)+" ,");
         System.out.println();
     }
+    public static void Second_chance(costumer new_one,int n){
+        if (sec_list.contains(new_one)){
+            int j=sec_list.indexOf(new_one);
+            costumer c= sec_list.get(j);
+            c.refrence=1;
+            sec_list.set(j,c);
+        }
+        else {
+            numof_second_costumer++;
+            if (numof_second_costumer<=n){
+                CountSecondChanceFault++;
+                sec_list.add(new_one);
+                sec_result.add(new_one.id);
+            }
+            else if (numof_second_costumer>n){
+                CountSecondChanceFault++;
+                int delete_id=0;
+                while (true){
+                    if(sec_list.get(0).refrence==1){
+                        costumer c=sec_list.get(0);
+                        c.refrence=0;
+                        sec_list.remove(0);
+                        sec_list.add(c);
+                        continue;
+                    }
+                    else {
+                        delete_id=sec_list.get(0).id;
+                        sec_list.remove(0);
+                        break;
+                    }
+                }
+                sec_list.add(new_one);
+                for (int i = 0; i < sec_result.size(); i++) {
+                    if(sec_result.get(i)==delete_id){
+                        sec_result.set(i,new_one.id);
+                        break;
+                    }
+                }
+            }
 
+        }
+        System.out.print("SecondChance :");
+        for (int i = 0; i < sec_result.size(); i++) {
+            System.out.print(sec_result.get(i)+ " ,");
+        }
+
+        System.out.println();
+    }
 }
 
 
